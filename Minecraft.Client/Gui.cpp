@@ -872,13 +872,16 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 
 		vector<wstring> lines;
 
-        lines.push_back(ClientConstants::VERSION_STRING);
-        lines.push_back(ClientConstants::BRANCH_STRING);
+		// Only add version/branch lines if the watermark toggle is enabled
+		if (ClientConstants::SHOW_VERSION_WATERMARK) {
+			lines.push_back(ClientConstants::VERSION_STRING);
+			lines.push_back(ClientConstants::BRANCH_STRING);
+		}
         if (minecraft->options->renderDebug && minecraft->player != nullptr && minecraft->level != nullptr)
         {
             lines.push_back(minecraft->fpsString);
             lines.push_back(L"E: " + std::to_wstring(minecraft->level->getAllEntities().size())); // Could maybe use entity::shouldRender to work out how many are rendered but thats like expensive
-                                                                                                  // TODO Add server information with packet counts - once multiplayer is more stable
+                                                                                                      // TODO Add server information with packet counts - once multiplayer is more stable
             int renderDistance = app.GetGameSettings(iPad, eGameSetting_RenderDistance);
             // Calculate the chunk sections using 16 * (2n + 1)^2
             lines.push_back(L"C: " + std::to_wstring(16 * (2 * renderDistance + 1) * (2 * renderDistance + 1)) + L" D: " + std::to_wstring(renderDistance));
@@ -987,7 +990,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
             lines.push_back(minecraft->gatherStats2()); // Empty currently - CPlatformNetworkManagerStub::GatherStats()
             lines.push_back(minecraft->gatherStats3()); // RTT
         }
-		
+
 #ifdef _DEBUG // Only show terrain features in debug builds not release
         // TERRAIN FEATURES
         if (minecraft->level->dimension->id == 0)
@@ -1028,7 +1031,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
                 }
             }
 
-            lines.push_back(L""); // Add a spacer line
+            lines.push_back(L""; // Add a spacer line
             for (int i = eTerrainFeature_Stronghold; i <= static_cast<int>(eTerrainFeature_Ravine); i++)
             {
                 lines.push_back(wfeature[i]);
@@ -1050,10 +1053,10 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 	MemSect(0);
 #endif
 
-	lastTickA = a;
-	// 4J Stu - This is now displayed in a xui scene
+lastTickA = a;
+// 4J Stu - This is now displayed in a xui scene
 #if 0
-	// Jukebox CD message
+// Jukebox CD message
     if (overlayMessageTime > 0)
 	{
         float t = overlayMessageTime - a;
@@ -1619,7 +1622,7 @@ void Gui::renderGraph(int dataLength, int dataPos, int64_t *dataA, float dataASc
 
 			t->vertex((float)(xScale*i + 0.5f), (float)( height - aVal + 0.5f), static_cast<float>(0));
 			t->vertex((float)(xScale*i + 0.5f), (float)( height + 0.5f), static_cast<float>(0));
-		}
+			}
 
 		if( dataB != NULL )
 		{
