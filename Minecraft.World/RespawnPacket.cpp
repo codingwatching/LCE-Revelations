@@ -70,7 +70,7 @@ void RespawnPacket::read(DataInputStream *dis) //throws IOException
 void RespawnPacket::write(DataOutputStream *dos) //throws IOException
 {
 	dos->writeByte(dimension);
-	dos->writeByte(playerGameType->getId() | (m_isHardcore ? 0x8 : 0));
+	dos->writeByte(m_isHardcore ? (playerGameType->getId() | 0x8) : playerGameType->getId());
 	dos->writeShort(mapHeight);
 	if (m_pLevelType == nullptr)
 	{

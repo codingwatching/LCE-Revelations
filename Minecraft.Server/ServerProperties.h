@@ -73,6 +73,7 @@ namespace ServerRuntime
 		bool doTileDrops;
 		bool naturalRegeneration;
 		bool doDaylightCycle;
+		bool hardcore;
 
 		/** other MinecraftServer runtime settings */
 		int maxBuildHeight;

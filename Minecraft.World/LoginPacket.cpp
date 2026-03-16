@@ -149,7 +149,7 @@ void LoginPacket::write(DataOutputStream *dos) //throws IOException
 		writeUtf(m_pLevelType->getGeneratorName(), dos);
 	}
 	dos->writeLong(seed);
-	dos->writeInt(gameType | (m_isHardcore ? 0x8 : 0));
+	dos->writeInt(m_isHardcore ? (gameType | 0x8) : gameType);
 	dos->writeByte(dimension);
 	dos->writeByte(mapHeight);
 	dos->writeByte(maxPlayers);

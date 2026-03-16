@@ -369,6 +369,13 @@ int main(int argc, char **argv)
 	ServerPropertiesConfig serverProperties = LoadServerPropertiesConfig();
 	ApplyServerPropertiesToDedicatedConfig(serverProperties, &config);
 
+	// Hardcore mode forces Hard difficulty (matches vanilla Java behavior)
+	if (serverProperties.hardcore && serverProperties.difficulty != 3)
+	{
+		LogInfof("startup", "Hardcore mode enabled: forcing difficulty from %d to 3 (Hard).", serverProperties.difficulty);
+		serverProperties.difficulty = 3;
+	}
+
 	if (!ParseCommandLine(argc, argv, &config))
 	{
 		PrintUsage();
@@ -529,6 +536,7 @@ int main(int argc, char **argv)
 	app.SetGameHostOption(eGameHostOption_DoTileDrops, serverProperties.doTileDrops ? 1 : 0);
 	app.SetGameHostOption(eGameHostOption_NaturalRegeneration, serverProperties.naturalRegeneration ? 1 : 0);
 	app.SetGameHostOption(eGameHostOption_DoDaylightCycle, serverProperties.doDaylightCycle ? 1 : 0);
+	app.SetGameHostOption(eGameHostOption_Hardcore, serverProperties.hardcore ? 1 : 0);
 #ifdef _LARGE_WORLDS
 	app.SetGameHostOption(eGameHostOption_WorldSize, serverProperties.worldSize);
 	// Apply desired target size for loading existing worlds.

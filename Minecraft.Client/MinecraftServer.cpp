@@ -1007,6 +1007,9 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 #endif
 		levels[i]->getLevelData()->setGameType(gameType);
 
+		// Apply hardcore flag from host option to level data so loaded worlds respect server.properties
+		levels[i]->getLevelData()->setHardcore(isHardcore());
+
 		if(app.getLevelGenerationOptions() != nullptr)
 		{
 			LevelGenerationOptions *mapOptions = app.getLevelGenerationOptions();

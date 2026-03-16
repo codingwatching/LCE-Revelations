@@ -137,6 +137,7 @@ public:
 	void queueSmallIdForRecycle(BYTE smallId);
 	bool isXuidBanned(PlayerUID xuid);
 	void banXuid(PlayerUID xuid);  // 4J Added - for hardcore mode ban-on-death
+	void banPlayerForHardcoreDeath(ServerPlayer *player);  // Persistent XUID + IP ban on hardcore death
 	// AP added for Vita so the range can be increased once the level starts
 	void setViewDistance(int newViewDistance);
 };

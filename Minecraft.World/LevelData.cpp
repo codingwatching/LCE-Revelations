@@ -671,6 +671,11 @@ bool LevelData::isHardcore()
 	return hardcore;
 }
 
+void LevelData::setHardcore(bool hardcore)
+{
+	this->hardcore = hardcore;
+}
+
 bool LevelData::getAllowCommands()
 {
 	return allowCommands;

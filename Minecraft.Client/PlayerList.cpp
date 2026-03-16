@@ -39,6 +39,9 @@
 
 #if defined(_WINDOWS64) && defined(MINECRAFT_SERVER_BUILD)
 #include "..\Minecraft.Server\Access\Access.h"
+#include "..\Minecraft.Server\Common\StringUtils.h"
+#include "..\Minecraft.Server\ServerLogger.h"
+#include "..\Minecraft.Server\ServerLogManager.h"
 extern bool g_Win64DedicatedServer;
 #endif
 
@@ -1727,6 +1730,71 @@ void PlayerList::banXuid(PlayerUID xuid)
 	}
 
 	LeaveCriticalSection(&m_banCS);
+}
+
+void PlayerList::banPlayerForHardcoreDeath(ServerPlayer *player)
+{
+	if (player == nullptr) return;
+
+	// Always apply the in-memory XUID ban (works for both client-hosted and dedicated)
+	banXuid(player->getOnlineXuid());
+
+#if defined(_WINDOWS64) && defined(MINECRAFT_SERVER_BUILD)
+	if (g_Win64DedicatedServer)
+	{
+		const std::string playerName = ServerRuntime::StringUtils::WideToUtf8(player->getName());
+
+		ServerRuntime::Access::BanMetadata metadata = ServerRuntime::Access::BanManager::BuildDefaultMetadata("Hardcore Death");
+		metadata.reason = "Died in hardcore mode";
+
+		// Ban online XUID
+		ServerRuntime::Access::AddPlayerBan(player->getOnlineXuid(), playerName, metadata);
+
+		// Also ban offline XUID if it differs (follows CliCommandBan pattern)
+		PlayerUID offlineXuid = player->getXuid();
+		if (offlineXuid != INVALID_XUID && offlineXuid != player->getOnlineXuid())
+		{
+			ServerRuntime::Access::AddPlayerBan(offlineXuid, playerName, metadata);
+		}
+
+		// Ban the player's IP address (uses same access path as CliCommandBanIp)
+		if (player->connection != nullptr && player->connection->connection != nullptr && player->connection->connection->getSocket() != nullptr)
+		{
+			const unsigned char smallId = player->connection->connection->getSocket()->getSmallId();
+			std::string ip;
+			if (smallId != 0 && ServerRuntime::ServerLogManager::TryGetConnectionRemoteIp(smallId, &ip))
+			{
+				ServerRuntime::Access::AddIpBan(ip, metadata);
+				ServerRuntime::LogInfof("Hardcore", "Player %s banned (XUID + IP %s) for dying in hardcore mode.", playerName.c_str(), ip.c_str());
+			}
+			else
+			{
+				ServerRuntime::LogInfof("Hardcore", "Player %s banned (XUID only, IP not available) for dying in hardcore mode.", playerName.c_str());
+			}
+		}
+		else
+		{
+			ServerRuntime::LogInfof("Hardcore", "Player %s banned (XUID only, no connection) for dying in hardcore mode.", playerName.c_str());
+		}
+
+		// Send ban reason then defer the actual close to the next tick, because this
+		// method runs mid-tick inside ServerPlayer::die(). A synchronous disconnect
+		// can invalidate the player/connection while the tick is still executing.
+		if (player->connection != nullptr)
+		{
+			player->connection->send(std::make_shared<DisconnectPacket>(DisconnectPacket::eDisconnect_Banned));
+			player->connection->closeOnTick();
+		}
+
+	}
+	else
+#endif
+	{
+		// Client-hosted: force-save so the host cannot circumvent death by quitting without saving.
+		// On dedicated server the autosave handles persistence, so skip the forced save to avoid
+		// the client getting stuck on a "host is saving" screen during disconnect.
+		app.SetXuiServerAction(ProfileManager.GetPrimaryPad(), eXuiServerAction_SaveGame);
+	}
 }
 
 // AP added for Vita so the range can be increased once the level starts

@@ -574,10 +574,10 @@ void ServerPlayer::die(DamageSource *source)
 	{
 		setGameMode(GameType::ADVENTURE);
 
-		// Ban this player's XUID and force-save so the host
-		// cannot circumvent the death by quitting without saving.
-		server->getPlayers()->banXuid(getOnlineXuid());
-		app.SetXuiServerAction(ProfileManager.GetPrimaryPad(), eXuiServerAction_SaveGame);
+		// Ban this player's XUID and queue disconnect.
+		// The force-save is triggered inside banPlayerForHardcoreDeath after the
+		// disconnect is queued, so the client doesn't get stuck on a save screen.
+		server->getPlayers()->banPlayerForHardcoreDeath(this);
 	}
 
 	if (!level->getGameRules()->getBoolean(GameRules::RULE_KEEPINVENTORY))

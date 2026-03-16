@@ -25,6 +25,7 @@
 #include "..\Minecraft.World\StringHelpers.h"
 #include "..\Minecraft.World\Socket.h"
 #include "..\Minecraft.World\Achievements.h"
+#include "..\Minecraft.World\LevelData.h"
 #include "..\Minecraft.World\net.minecraft.h"
 #include "EntityTracker.h"
 #include "ServerConnection.h"
@@ -141,6 +142,14 @@ void PlayerConnection::tick()
 	if (dropSpamTickCount > 0)
 	{
 		dropSpamTickCount--;
+	}
+
+	// Ensure server-side player tick runs even when no move packet was received this tick.
+	// Without this, environmental damage (drowning, fire, lava) is never applied to clients
+	// that don't send frequent move packets.
+	if (!didTick && player != nullptr)
+	{
+		player->doTick(false);
 	}
 }
 
@@ -1109,22 +1118,12 @@ void PlayerConnection::handleClientCommand(shared_ptr<ClientCommandPacket> packe
 		{
 			player = server->getPlayers()->respawn(player, player->m_enteredEndExitPortal?0:player->dimension, true);
 		}
-		//else if (player.getLevel().getLevelData().isHardcore())
-		//{
-		//	if (server.isSingleplayer() && player.name.equals(server.getSingleplayerName()))
-		//	{
-		//		player.connection.disconnect("You have died. Game over, man, it's game over!");
-		//		server.selfDestruct();
-		//	}
-		//	else
-		//	{
-		//		BanEntry ban = new BanEntry(player.name);
-		//		ban.setReason("Death in Hardcore");
-
-		//		server.getPlayers().getBans().add(ban);
-		//		player.connection.disconnect("You have died. Game over, man, it's game over!");
-		//	}
-		//}
+		else if (player->level->getLevelData()->isHardcore())
+		{
+			// Hardcore mode — server rejects respawn. Ban and disconnect are already
+			// handled in ServerPlayer::die() via banPlayerForHardcoreDeath().
+			return;
+		}
 		else
 		{
 			if (player->getHealth() > 0) return;
