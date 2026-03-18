@@ -14,6 +14,15 @@ This project is based on source code of Minecraft Legacy Console Edition v1.6.05
 
 ## Latest:
 
+Performance optimizations across rendering, audio, and entity systems!
+- Renderer: column-level frustum culling and compact visible-chunk lists skip thousands of empty iterations per frame; lightweight second-pass render path avoids redundant checks
+- Sound engine: filesystem probe results are now cached, eliminating repeated file-existence checks every time a sound plays; sounds are pre-decoded for smoother playback
+- Entity movement: reduced `shared_from_this()` overhead by caching the shared pointer; `dynamic_pointer_cast` replaced with a raw pointer cast guarded by `instanceof`
+- Lighting: `checkLight()` is now skipped when tile light properties haven't changed, avoiding unnecessary light recalculations
+- Chunk updates: early-out for non-dirty chunks in the update loop; scaled recheck period at high render distances
+- Threading: entity query locking consolidated at the `Level` layer on all platforms for consistent thread safety
+- Block breaking: server now skips redundant tile-update packets when a block is successfully destroyed
+
 Migrated to CMake build system (upstream)!
 - Project now builds with CMake instead of Visual Studio project files
 - Use `cmake --preset windows64` or open the repo folder directly in Visual Studio (it detects `CMakeLists.txt` automatically)
