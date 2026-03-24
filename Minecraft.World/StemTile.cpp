@@ -3,11 +3,11 @@
 #include "net.minecraft.world.entity.item.h"
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.h"
-#include "..\Minecraft.Client\Minecraft.h"
-#include "..\Minecraft.Client\Common\Colours\ColourTable.h"
+#include "../Minecraft.Client/Minecraft.h"
+#include "../Minecraft.Client/Common/Colours/ColourTable.h"
 #include "StemTile.h"
 #if defined(_WINDOWS64) && defined(MINECRAFT_SERVER_BUILD)
-#include "..\Minecraft.Server\FourKitBridge.h"
+#include "../Minecraft.Server/FourKitBridge.h"
 #include "Dimension.h"
 #endif
 

@@ -1,22 +1,22 @@
 ﻿#include "stdafx.h"
 
 #include "SoundEngine.h"
-#include "..\Consoles_App.h"
-#include "..\..\MultiplayerLocalPlayer.h"
-#include "..\..\..\Minecraft.World\net.minecraft.world.level.h"
-#include "..\..\Minecraft.World\leveldata.h"
-#include "..\..\Minecraft.World\mth.h"
-#include "..\..\TexturePackRepository.h"
-#include "..\..\DLCTexturePack.h"
-#include "..\..\MultiPlayerGameMode.h"
-#include "..\..\Minecraft.World\LevelSettings.h"
-#include "Common\DLC\DLCAudioFile.h"
+#include "../Consoles_App.h"
+#include "../../MultiplayerLocalPlayer.h"
+#include "../../../Minecraft.World/net.minecraft.world.level.h"
+#include "../../Minecraft.World/leveldata.h"
+#include "../../Minecraft.World/mth.h"
+#include "../../TexturePackRepository.h"
+#include "../../DLCTexturePack.h"
+#include "../../MultiPlayerGameMode.h"
+#include "../../Minecraft.World/LevelSettings.h"
+#include "Common/DLC/DLCAudioFile.h"
 
 #ifdef __PSVITA__
 #include <audioout.h>
 #endif
 
-#include "..\..\Minecraft.Client\Windows64\Windows64_App.h"
+#include "../../Minecraft.Client/Windows64/Windows64_App.h"
 
 #include "stb_vorbis.h"
 
@@ -27,7 +27,7 @@
 #include <vector>
 #include <memory>
 #include <mutex>
-#include <lce_filesystem\lce_filesystem.h>
+#include <lce_filesystem/lce_filesystem.h>
 
 #ifdef __ORBIS__
 #include <audioout.h>

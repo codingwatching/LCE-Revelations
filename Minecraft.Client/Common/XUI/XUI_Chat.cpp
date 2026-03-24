@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "XUI_Chat.h"
-#include "..\..\Minecraft.h"
-#include "..\..\Gui.h"
-#include "..\..\..\Minecraft.World\ArabicShaping.h"
+#include "../../Minecraft.h"
+#include "../../Gui.h"
+#include "../../../Minecraft.World/ArabicShaping.h"
 
 HRESULT CScene_Chat::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 {

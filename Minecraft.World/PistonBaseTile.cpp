@@ -5,13 +5,13 @@
 #include "PistonExtensionTile.h"
 #include "Facing.h"
 #include "net.minecraft.world.level.h"
-#include "..\Minecraft.Client\Minecraft.h"
-#include "..\Minecraft.Client\MultiPlayerLevel.h"
+#include "../Minecraft.Client/Minecraft.h"
+#include "../Minecraft.Client/MultiPlayerLevel.h"
 #include "net.minecraft.world.h"
 #include "LevelChunk.h"
 #include "Dimension.h"
 #if defined(_WINDOWS64) && defined(MINECRAFT_SERVER_BUILD)
-#include "..\Minecraft.Server\FourKitBridge.h"
+#include "../Minecraft.Server/FourKitBridge.h"
 #endif
 
 const wstring PistonBaseTile::EDGE_TEX = L"piston_side";

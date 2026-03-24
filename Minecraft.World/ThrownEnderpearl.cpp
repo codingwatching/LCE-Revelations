@@ -3,11 +3,11 @@
 #include "net.minecraft.world.damagesource.h"
 #include "net.minecraft.world.entity.h"
 #include "net.minecraft.world.level.h"
-#include "..\Minecraft.Client\ServerPlayer.h"
-#include "..\Minecraft.Client\PlayerConnection.h"
+#include "../Minecraft.Client/ServerPlayer.h"
+#include "../Minecraft.Client/PlayerConnection.h"
 #include "ThrownEnderpearl.h"
 #if defined(_WINDOWS64) && defined(MINECRAFT_SERVER_BUILD)
-#include "..\Minecraft.Server\FourKitBridge.h"
+#include "../Minecraft.Server/FourKitBridge.h"
 #endif
 
 

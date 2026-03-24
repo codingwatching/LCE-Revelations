@@ -2,11 +2,11 @@
 
 #include "CliCommandRevokeToken.h"
 
-#include "..\..\ServerCliEngine.h"
-#include "..\..\ServerCliParser.h"
-#include "..\..\..\Access\Access.h"
-#include "..\..\..\Security\IdentityTokenManager.h"
-#include "..\..\..\ServerLogManager.h"
+#include "../../ServerCliEngine.h"
+#include "../../ServerCliParser.h"
+#include "../../../Access/Access.h"
+#include "../../../Security/IdentityTokenManager.h"
+#include "../../../ServerLogManager.h"
 
 namespace ServerRuntime
 {

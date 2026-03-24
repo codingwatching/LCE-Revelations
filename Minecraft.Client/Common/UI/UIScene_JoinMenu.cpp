@@ -1,14 +1,14 @@
 #include "stdafx.h"
 #include "UI.h"
 #include "UIScene_JoinMenu.h"
-#include "..\..\Minecraft.h"
-#include "..\..\TexturePackRepository.h"
-#include "..\..\Options.h"
-#include "..\..\MinecraftServer.h"
-#include "..\..\..\Minecraft.World\net.minecraft.world.level.h"
-#include "..\..\..\Minecraft.World\net.minecraft.world.h"
+#include "../../Minecraft.h"
+#include "../../TexturePackRepository.h"
+#include "../../Options.h"
+#include "../../MinecraftServer.h"
+#include "../../../Minecraft.World/net.minecraft.world.level.h"
+#include "../../../Minecraft.World/net.minecraft.world.h"
 #ifdef _WINDOWS64
-#include "..\..\Windows64\Network\WinsockNetLayer.h"
+#include "../../Windows64/Network/WinsockNetLayer.h"
 #endif
 
 #define UPDATE_PLAYERS_TIMER_ID 0

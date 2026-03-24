@@ -2,9 +2,9 @@
 
 #include "CliCommandHelp.h"
 
-#include "..\..\ServerCliEngine.h"
-#include "..\..\ServerCliRegistry.h"
-#include "..\..\..\FourKitBridge.h"
+#include "../../ServerCliEngine.h"
+#include "../../ServerCliRegistry.h"
+#include "../../../FourKitBridge.h"
 
 #include <cstring>
 

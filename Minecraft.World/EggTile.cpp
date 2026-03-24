@@ -4,7 +4,7 @@
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.entity.item.h"
 #if defined(_WINDOWS64) && defined(MINECRAFT_SERVER_BUILD)
-#include "..\Minecraft.Server\FourKitBridge.h"
+#include "../Minecraft.Server/FourKitBridge.h"
 #include "Dimension.h"
 #endif
 

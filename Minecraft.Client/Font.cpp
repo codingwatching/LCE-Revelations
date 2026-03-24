@@ -4,11 +4,11 @@
 #include "Options.h"
 #include "Tesselator.h"
 #include "ResourceLocation.h"
-#include "..\Minecraft.World\IntBuffer.h"
-#include "..\Minecraft.World\net.minecraft.h"
-#include "..\Minecraft.World\StringHelpers.h"
-#include "..\Minecraft.World\Random.h"
-#include "..\Minecraft.World\ArabicShaping.h"
+#include "../Minecraft.World/IntBuffer.h"
+#include "../Minecraft.World/net.minecraft.h"
+#include "../Minecraft.World/StringHelpers.h"
+#include "../Minecraft.World/Random.h"
+#include "../Minecraft.World/ArabicShaping.h"
 
 Font::Font(Options *options, const wstring& name, Textures* textures, bool enforceUnicode, ResourceLocation *textureLocation, int cols, int rows, int charWidth, int charHeight, unsigned short charMap[]/* = nullptr */) : textures(textures)
 {

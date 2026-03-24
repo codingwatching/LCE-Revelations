@@ -6,13 +6,13 @@
 #include "PendingConnection.h"
 #include "PlayerConnection.h"
 #include "ServerPlayer.h"
-#include "..\Minecraft.World\net.minecraft.network.h"
-#include "..\Minecraft.World\Socket.h"
-#include "..\Minecraft.World\net.minecraft.world.level.h"
+#include "../Minecraft.World/net.minecraft.network.h"
+#include "../Minecraft.World/Socket.h"
+#include "../Minecraft.World/net.minecraft.world.level.h"
 #include "MultiPlayerLevel.h"
 #if defined(_WINDOWS64) && defined(MINECRAFT_SERVER_BUILD)
-#include "..\Minecraft.Server\Security\SecurityConfig.h"
-#include "..\Minecraft.Server\ServerLogManager.h"
+#include "../Minecraft.Server/Security/SecurityConfig.h"
+#include "../Minecraft.Server/ServerLogManager.h"
 #endif
 
 ServerConnection::ServerConnection(MinecraftServer *server)

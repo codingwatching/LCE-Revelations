@@ -1,18 +1,18 @@
 #include "stdafx.h"
-#include "..\Minecraft.Client\Minecraft.h"
+#include "../Minecraft.Client/Minecraft.h"
 #include "GrassTile.h"
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.biome.h"
 #include "net.minecraft.h"
 #include "net.minecraft.world.h"
 #if defined(_WINDOWS64) && defined(MINECRAFT_SERVER_BUILD)
-#include "..\Minecraft.Server\FourKitBridge.h"
+#include "../Minecraft.Server/FourKitBridge.h"
 #include "Dimension.h"
 #endif
 
 // AP - included for PSVita Alpha cut out optimisation
 #include "IntBuffer.h"
-#include "..\Minecraft.Client\Tesselator.h"
+#include "../Minecraft.Client/Tesselator.h"
 
 GrassTile::GrassTile(int id) : Tile(id, Material::grass)
 {

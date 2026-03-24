@@ -5,10 +5,10 @@
 #include <bcrypt.h>
 #endif
 
-#include "..\Common\FileUtils.h"
-#include "..\Common\StringUtils.h"
-#include "..\ServerLogger.h"
-#include "..\vendor\nlohmann\json.hpp"
+#include "../Common/FileUtils.h"
+#include "../Common/StringUtils.h"
+#include "../ServerLogger.h"
+#include "../vendor/nlohmann/json.hpp"
 
 #include <algorithm>
 

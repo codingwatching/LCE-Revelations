@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "UI.h"
 #include "UIControl.h"
-#include "..\..\..\Minecraft.World\StringHelpers.h"
-#include "..\..\..\Minecraft.World\JavaMath.h"
-#include "..\..\..\Minecraft.World\ArabicShaping.h"
+#include "../../../Minecraft.World/StringHelpers.h"
+#include "../../../Minecraft.World/JavaMath.h"
+#include "../../../Minecraft.World/ArabicShaping.h"
 
 UIControl_Base::UIControl_Base()
 {

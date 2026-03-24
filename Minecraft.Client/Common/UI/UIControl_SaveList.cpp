@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "UI.h"
 #include "UIControl_SaveList.h"
-#include "..\..\..\Minecraft.World\ArabicShaping.h"
+#include "../../../Minecraft.World/ArabicShaping.h"
 
 bool UIControl_SaveList::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
 {

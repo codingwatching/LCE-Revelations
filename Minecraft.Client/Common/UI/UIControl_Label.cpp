@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "UI.h"
 #include "UIControl_Label.h"
-#include "..\..\..\Minecraft.World\StringHelpers.h"
-#include "..\..\..\Minecraft.World\ArabicShaping.h"
+#include "../../../Minecraft.World/StringHelpers.h"
+#include "../../../Minecraft.World/ArabicShaping.h"
 
 UIControl_Label::UIControl_Label()
 {

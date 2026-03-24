@@ -24,9 +24,9 @@
 #include "net.minecraft.world.scores.h"
 #include "com.mojang.nbt.h"
 #include "LivingEntity.h"
-#include "..\Minecraft.Client\Textures.h"
-#include "..\Minecraft.Client\ServerLevel.h"
-#include "..\Minecraft.Client\EntityTracker.h"
+#include "../Minecraft.Client/Textures.h"
+#include "../Minecraft.Client/ServerLevel.h"
+#include "../Minecraft.Client/EntityTracker.h"
 #include "SoundTypes.h"
 #include "BasicTypeContainers.h"
 #include "ParticleTypes.h"
@@ -34,7 +34,7 @@
 #include "GenericStats.h"
 #include "ItemEntity.h"
 #if defined(_WINDOWS64) && defined(MINECRAFT_SERVER_BUILD)
-#include "..\Minecraft.Server\FourKitBridge.h"
+#include "../Minecraft.Server/FourKitBridge.h"
 #endif
 
 const double LivingEntity::MIN_MOVEMENT_DISTANCE = 0.005;

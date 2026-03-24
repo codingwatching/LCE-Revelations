@@ -3,13 +3,13 @@
 #include "PlayerList.h"
 #include "ServerPlayer.h"
 #include "PlayerConnection.h"
-#include "..\Minecraft.World\net.minecraft.commands.h"
-#include "..\Minecraft.World\net.minecraft.network.packet.h"
-#include "..\Minecraft.World\net.minecraft.world.level.h"
-#include "..\Minecraft.World\net.minecraft.world.level.dimension.h"
+#include "../Minecraft.World/net.minecraft.commands.h"
+#include "../Minecraft.World/net.minecraft.network.packet.h"
+#include "../Minecraft.World/net.minecraft.world.level.h"
+#include "../Minecraft.World/net.minecraft.world.level.dimension.h"
 #include "TeleportCommand.h"
 #if defined(_WINDOWS64) && defined(MINECRAFT_SERVER_BUILD)
-#include "..\Minecraft.Server\FourKitBridge.h"
+#include "../Minecraft.Server/FourKitBridge.h"
 #endif
 
 EGameCommand TeleportCommand::getId()

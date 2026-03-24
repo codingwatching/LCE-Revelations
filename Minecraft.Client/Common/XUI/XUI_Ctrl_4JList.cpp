@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "XUI_Ctrl_4JList.h"
-#include "..\..\..\Minecraft.World\ArabicShaping.h"
+#include "../../../Minecraft.World/ArabicShaping.h"
 
 static bool TimeSortFn(const void *a, const void *b);
 

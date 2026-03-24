@@ -1,8 +1,8 @@
 #include "FourKitBridge.h"
 #include "stdafx.h"
 
-#include "..\Minecraft.World\DamageSource.h"
-#include "..\Minecraft.World\EntityDamageSource.h"
+#include "../Minecraft.World/DamageSource.h"
+#include "../Minecraft.World/EntityDamageSource.h"
 
 namespace FourKitBridge
 {

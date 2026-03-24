@@ -2,11 +2,11 @@
 #include "UI.h"
 #include "UIScene_DeathMenu.h"
 #include "IUIScene_PauseMenu.h"
-#include "..\..\Minecraft.h"
-#include "..\..\MultiPlayerLevel.h"
-#include "..\..\MultiplayerLocalPlayer.h"
-#include "..\..\MinecraftServer.h"
-#include "..\..\..\Minecraft.World\net.minecraft.world.level.storage.h"
+#include "../../Minecraft.h"
+#include "../../MultiPlayerLevel.h"
+#include "../../MultiplayerLocalPlayer.h"
+#include "../../MinecraftServer.h"
+#include "../../../Minecraft.World/net.minecraft.world.level.storage.h"
 
 UIScene_DeathMenu::UIScene_DeathMenu(int iPad, void *initData, UILayer *parentLayer) : UIScene(iPad, parentLayer)
 {
