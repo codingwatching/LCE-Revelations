@@ -14,6 +14,8 @@
 #endif
 #include "..\..\..\Minecraft.World\DisconnectPacket.h"
 #include "..\..\Minecraft.h"
+#include <windns.h>
+#pragma comment(lib, "Dnsapi.lib")
 #include "..\4JLibs\inc\4J_Profile.h"
 
 #include <string>
@@ -310,6 +312,44 @@ bool WinsockNetLayer::HostGame(int port, const char* bindIp)
 	return true;
 }
 
+// Resolve a Minecraft SRV record (_minecraft._tcp.<hostname>) to get the actual host and port.
+// Returns true if an SRV record was found and outHost/outPort were updated.
+// Returns false (no changes) for numeric IPs, missing records, or DNS errors.
+static bool ResolveSRV(const char* hostname, char* outHost, size_t outHostSize, int* outPort)
+{
+	// Skip numeric IPs (starts with digit, contains no letters)
+	if (hostname[0] >= '0' && hostname[0] <= '9')
+	{
+		bool hasLetter = false;
+		for (const char* p = hostname; *p; ++p)
+			if ((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z')) { hasLetter = true; break; }
+		if (!hasLetter) return false;
+	}
+
+	char srvName[300];
+	sprintf_s(srvName, "_minecraft._tcp.%s", hostname);
+
+	DNS_RECORD* records = nullptr;
+	DNS_STATUS status = DnsQuery_A(srvName, DNS_TYPE_SRV, DNS_QUERY_STANDARD, nullptr, &records, nullptr);
+	if (status != 0 || records == nullptr)
+		return false;
+
+	// Find the first SRV record
+	for (DNS_RECORD* r = records; r != nullptr; r = r->pNext)
+	{
+		if (r->wType == DNS_TYPE_SRV)
+		{
+			strncpy_s(outHost, outHostSize, r->Data.SRV.pNameTarget, _TRUNCATE);
+			*outPort = r->Data.SRV.wPort;
+			DnsRecordListFree(records, DnsFreeRecordList);
+			return true;
+		}
+	}
+
+	DnsRecordListFree(records, DnsFreeRecordList);
+	return false;
+}
+
 bool WinsockNetLayer::JoinGame(const char* ip, int port)
 {
 	if (!s_initialized && !Initialize()) return false;
@@ -336,6 +376,13 @@ bool WinsockNetLayer::JoinGame(const char* ip, int port)
 		s_clientRecvThread = nullptr;
 	}
 
+	// Try SRV record resolution for hostnames
+	char resolvedHost[256];
+	int resolvedPort = port;
+	strncpy_s(resolvedHost, sizeof(resolvedHost), ip, _TRUNCATE);
+	if (ResolveSRV(ip, resolvedHost, sizeof(resolvedHost), &resolvedPort))
+		app.DebugPrintf("SRV resolved %s -> %s:%d\n", ip, resolvedHost, resolvedPort);
+
 	struct addrinfo hints = {};
 	struct addrinfo* result = nullptr;
 
@@ -344,9 +391,9 @@ bool WinsockNetLayer::JoinGame(const char* ip, int port)
 	hints.ai_protocol = IPPROTO_TCP;
 
 	char portStr[16];
-	sprintf_s(portStr, "%d", port);
+	sprintf_s(portStr, "%d", resolvedPort);
 
-	int iResult = getaddrinfo(ip, portStr, &hints, &result);
+	int iResult = getaddrinfo(resolvedHost, portStr, &hints, &result);
 	if (iResult != 0)
 	{
 		app.DebugPrintf("getaddrinfo failed for %s:%d - %d\n", ip, port, iResult);
@@ -539,17 +586,24 @@ bool WinsockNetLayer::BeginJoinGame(const char* ip, int port)
 
 DWORD WINAPI WinsockNetLayer::JoinThreadProc(LPVOID param)
 {
+	// Try SRV record resolution for hostnames
+	char resolvedHost[256];
+	int resolvedPort = s_joinPort;
+	strncpy_s(resolvedHost, sizeof(resolvedHost), s_joinIP, _TRUNCATE);
+	if (ResolveSRV(s_joinIP, resolvedHost, sizeof(resolvedHost), &resolvedPort))
+		app.DebugPrintf("SRV resolved %s -> %s:%d\n", s_joinIP, resolvedHost, resolvedPort);
+
 	struct addrinfo hints = {}, *result = nullptr;
 	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
 
 	char portStr[16];
-	sprintf_s(portStr, "%d", s_joinPort);
+	sprintf_s(portStr, "%d", resolvedPort);
 
-	if (getaddrinfo(s_joinIP, portStr, &hints, &result) != 0)
+	if (getaddrinfo(resolvedHost, portStr, &hints, &result) != 0)
 	{
-		app.DebugPrintf("getaddrinfo failed for %s:%d\n", s_joinIP, s_joinPort);
+		app.DebugPrintf("getaddrinfo failed for %s:%d\n", resolvedHost, resolvedPort);
 		s_joinState = eJoinState_Failed;
 		return 0;
 	}

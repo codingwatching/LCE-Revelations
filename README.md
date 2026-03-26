@@ -14,6 +14,10 @@ This project is based on source code of Minecraft Legacy Console Edition v1.6.05
 
 ## Latest:
 
+SRV record support and async join refactor:
+- Added DNS SRV record resolution (`_minecraft._tcp.<hostname>`), matching Java Edition behavior. Players can connect using just a domain name (e.g. `play.example.com`) and the client will automatically look up the correct server address and port from DNS
+- Refactored the async server joining system: replaced boolean flags with a clean `eJoinState` enum state machine, moved connection progress handling into a dedicated `UIScene_ConnectingProgress` class with attempt counter and cancel support, and added a `FinalizeJoin()` separation so the recv thread only starts after the UI confirms success
+
 Piston fix for dedicated servers:
 - Fixed a bug where pistons would permanently break server-wide on dedicated servers when a redstone clock ran long enough. The piston update lock (`ignoreUpdate`) was set at the start of `triggerEvent` but never cleared on three early-return paths, permanently blocking all piston neighbor updates for the rest of the session. A fast clock would eventually hit one of these paths (e.g. signal state changing between event queuing and processing), locking out every piston in the world
 
