@@ -182,7 +182,12 @@ jobs:
     - name: Delete old release
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: gh release delete Nightly-Dedicated-Server --yes --cleanup-tag || true
+      run: gh release delete Nightly-Dedicated-Server --yes || true
+
+    - name: Delete old tag
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: gh api repos/${{ github.repository }}/git/refs/tags/Nightly-Dedicated-Server --method DELETE || true
 
     - name: Create signed tag
       env:
@@ -191,24 +196,17 @@ jobs:
         gh api repos/${{ github.repository }}/git/refs \
           --method POST \
           --field ref="refs/tags/Nightly-Dedicated-Server" \
-          --field sha="${{ github.sha }}" || \
-        gh api repos/${{ github.repository }}/git/refs/tags/Nightly-Dedicated-Server \
-          --method PATCH \
-          --field sha="${{ github.sha }}" \
-          --field force=true
+          --field sha="${{ github.sha }}"
 
     - name: Create release
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        cat > notes.md << 'EOF'
-        Dedicated Server runtime for Windows64.
-
-        Download `LCREServerWindows64.zip` and extract it to a folder where you'd like to keep the server runtime.
-        EOF
         gh release create Nightly-Dedicated-Server artifacts/* \
           --title "Server: ${{ steps.sha.outputs.short }}" \
-          --notes-file notes.md \
+          --notes "Dedicated Server runtime for Windows64.
+
+        Download \`LCREServerWindows64.zip\` and extract it to a folder where you'd like to keep the server runtime." \
           --latest=false
 
   release-client:
@@ -237,7 +235,12 @@ jobs:
     - name: Delete old release
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: gh release delete Nightly --yes --cleanup-tag || true
+      run: gh release delete Nightly --yes || true
+
+    - name: Delete old tag
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: gh api repos/${{ github.repository }}/git/refs/tags/Nightly --method DELETE || true
 
     - name: Create signed tag
       env:
@@ -246,17 +249,11 @@ jobs:
         gh api repos/${{ github.repository }}/git/refs \
           --method POST \
           --field ref="refs/tags/Nightly" \
-          --field sha="${{ github.sha }}" || \
-        gh api repos/${{ github.repository }}/git/refs/tags/Nightly \
-          --method PATCH \
-          --field sha="${{ github.sha }}" \
-          --field force=true
+          --field sha="${{ github.sha }}"
 
-    - name: Create release
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Write release notes
       run: |
-        cat > notes.md << 'EOF'
+        cat > notes.md <<'NOTES'
         # Instructions:
         **Newcomers:**
         - If this is your first time, download `LCREWindows64.zip` and extract it wherever you would like to keep it.
@@ -290,7 +287,12 @@ jobs:
         Changes/additions that stray from the upstream repo (`smartcmd/MinecraftConsoles`:
         - See: https://github.com/itsRevela/MinecraftConsoles?tab=readme-ov-file#latest
         - I can tweak this fork while staying compatible with the upstream repo without needing to wait on my pull requests to get accepted upstream (while keeping this fork updated with the latest and greatest from upstream)
-        EOF
+        NOTES
+
+    - name: Create release
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
         gh release create Nightly artifacts/* \
           --title "Client: ${{ steps.sha.outputs.short }}" \
           --notes-file notes.md
