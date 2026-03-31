@@ -14,6 +14,12 @@ This project is based on source code of Minecraft Legacy Console Edition v1.6.05
 
 ## Latest:
 
+### Security Gate Hotfix (Dedicated Server)
+
+- Fixed a critical bug where the security gate (packet buffer) was closed before the LoginPacket was sent during `placeNewPlayer`. Under high-latency connections (e.g. players connecting through tunnels or from distant regions), the LoginPacket and all login setup packets were buffered behind the cipher handshake. When the handshake completed and the gate flushed, game data arrived before the player object was initialized, causing a null pointer crash on the client
+- The security gate now closes after the login sequence and MC|CKey are sent, so essential setup packets arrive in plaintext before the cipher handshake completes
+- **Server owners must update their dedicated server binary to this version.** Players connecting to an updated server must also use the updated client (LCRE builds that include the cipher handshake support)
+
 ### Uncapped FPS (VSync Off)
 
 - FPS is no longer locked to the monitor's refresh rate when VSync is disabled. The precompiled 4J render library hardcodes `SyncInterval=1` in its Present call, which forced VBlank synchronization regardless of the VSync setting. The main loop now bypasses the library's Present and calls the DXGI swap chain directly with `SyncInterval=0` and `DXGI_PRESENT_ALLOW_TEARING` when VSync is off

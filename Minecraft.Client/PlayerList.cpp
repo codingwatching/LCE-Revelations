@@ -273,22 +273,6 @@ bool PlayerList::placeNewPlayer(Connection *connection, shared_ptr<ServerPlayer>
 	app.DebugPrintf("RECONNECT: placeNewPlayer smallId=%d entityId=%d dim=%d\n",
 		newSmallId, player->entityId, level->dimension->id);
 
-#if defined(_WINDOWS64) && defined(MINECRAFT_SERVER_BUILD)
-	// Close the security gate before sending any game data. All packets will be
-	// buffered until the cipher handshake completes, preventing unsecured clients
-	// from receiving XUIDs or game state during the grace period.
-	if (g_Win64DedicatedServer &&
-		ServerRuntime::Security::GetSettings().enableStreamCipher &&
-		ServerRuntime::Security::GetSettings().requireSecureClient)
-	{
-		INetworkPlayer *gateNp = connection->getSocket() ? connection->getSocket()->getPlayer() : nullptr;
-		if (gateNp != nullptr && !gateNp->IsLocal())
-		{
-			playerConnection->m_securityGateOpen = false;
-		}
-	}
-#endif
-
 	playerConnection->send(std::make_shared<LoginPacket>(L"", player->entityId, level->getLevelData()->getGenerator(),
 	                                                     level->getSeed(),
 	                                                     player->gameMode->getGameModeForPlayer()->getId(),
@@ -388,6 +372,16 @@ bool PlayerList::placeNewPlayer(Connection *connection, shared_ptr<ServerPlayer>
 				{
 					ServerRuntime::Security::GetHandshakeEnforcer().OnCipherKeySent(smallId, s_playerListTickCount);
 				}
+			}
+
+			// Close the security gate AFTER sending the essential login sequence
+			// and MC|CKey. The login setup packets (LoginPacket, spawn position,
+			// abilities, chunks, teleport) must arrive in plaintext before the
+			// cipher handshake completes. Only subsequent tick data is buffered
+			// until the handshake finishes and openSecurityGate() flushes.
+			if (ServerRuntime::Security::GetSettings().requireSecureClient)
+			{
+				playerConnection->m_securityGateOpen = false;
 			}
 		}
 	}
