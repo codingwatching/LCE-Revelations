@@ -1,12 +1,7 @@
 ![Legacy Edition Banner](.github/LCRE-banner.png)
 # Minecraft Legacy Revelations
 
-If you have any questions regarding this fork, this is my Fluxer server (similar to a Discord server):
-<p align="center">
-  <a href="https://fluxer.gg/CgS3uFT7">
-    <img src="https://i.imgur.com/cNo8fMs.png" alt="Join my Fluxer server" width="220">
-  </a>
-</p>
+[![Discord](https://img.shields.io/badge/Discord-Join%20Server-5865F2?logo=discord&logoColor=white)](https://discord.gg/vS3wKQ4E3p)
 
 This project is based on source code of Minecraft Legacy Console Edition v1.6.0560.0 (TU19) with some fixes and improvements applied.
 
