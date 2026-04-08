@@ -3,11 +3,35 @@
 
 [![Discord](https://img.shields.io/badge/Discord-Join%20Server-5865F2?logo=discord&logoColor=white)](https://discord.gg/ycYvGjWmhu)
 
-This project is based on Legacy Console Edition v1.6.0560.0 (TU19) with fixes and improvements applied.
+This project is based on Legacy Console Edition v1.6.0560.0 (TU19) with fixes and improvements applied. Among these, LCE-Revelations features:
+
+- Fully stable from game-start to endgame
+- Dedicated server with token-based authentication and encrypted traffic
+- Hardcore Mode
+- Keyboard & mouse support
+- Uncapped FPS via a VSync toggle
+- Performance optimizations
+- Screenshots
+- Multi-language text input
+- Copy & paste support
+- DNS SRV record support
+- In-world player list
+- Linux cross-compilation
+- FourKit plugin support
 
 ![Tutorial World](.github/hardcore-preview.png)
 
 ## Latest:
+
+### Linux Cross-Compilation Support
+
+- The project can now be built from Linux, cross-compiling to Windows
+- See [COMPILE.md](COMPILE.md) for setup instructions
+
+### FourKit Plugin Support
+
+- Added a server-side plugin system (`Minecraft.Server.FourKit`) that lets you extend the dedicated server with plugins written in C# / .NET
+- Plugins are regular .NET class libraries loaded at server startup. See `samples/HelloPlugin` for a minimal example
 
 ### Chunk Loading Optimization (Dedicated Server)
 
